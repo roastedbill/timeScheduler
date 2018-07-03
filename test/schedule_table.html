@@ -1,0 +1,37 @@
+<!doctype html>
+<html>
+<head>
+	<meta charset="utf-8"/>
+	<title>Banner Scheduler</title>
+	<link rel="stylesheet" href="../dist/timesheet.min.css"/>
+	<!-- <script src="../dist/timesheet.min.js"></script> -->
+  <script src="../dist/jquery-3.3.1.min.js"></script>
+  <script src="../dist/jquery-ui.js"></script>
+  <script src="../source/javascripts/timesheet.js"></script>
+  <script>
+    $(function () {
+        var timeSheet = new Timesheet('timesheet', 1528128000, 1530720000, [
+          ['1528071072', '1529663072', '32771', 'http://cdn.gxx.garenanow.com/gxx/gamecenter/app/0000/010/001/home_banner/10001-banner-assets-1469591558.jpg', '1', '5'],
+          ['1529071072', '1530263072', '32771', 'http://cdn.gxx.garenanow.com/gxx/gamecenter/app/0000/010/001/home_banner/10001-banner-assets-1469689054.jpg', '3', '4'],
+          ],
+          [
+          ['1529171072', '1529763072', '32771', 'http://cdn.gxx.garenanow.com/gxx/gamecenter/app/0000/010/001/home_banner/10001-banner-assets-1470295139.jpg', '2', '3'],
+          ['1530063072', '1630663072', '32771', 'http://cdn.gxx.garenanow.com/gxx/gamecenter/app/0000/010/001/home_banner/10001-banner-assets-1475233469.jpg', '4', '6'],
+        ]);
+
+        $( ".data" ).sortable({
+          revert: true,
+          cancel: '.separator',
+        });
+        $( "ul, li" ).disableSelection();
+        $("#button").on("click", function() {
+            timeSheet.getScheduledData();
+        });
+    });
+  </script>
+</head>
+<body>
+    <div id="timesheet"></div>
+    <button id="button">Save</button>
+</body>
+</html>
