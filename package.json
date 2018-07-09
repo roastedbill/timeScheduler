@@ -1,8 +1,8 @@
 {
-  "name": "timesheet.js",
-  "version": "1.0.1",
-  "description": "With Timesheet.js you can easily create simple time and data sheets or timelines using HTML5, JavaScript and CSS3. Yep, it's a Vanilla JS library!",
-  "author": "sbstjn <mail@sbstjn.com>",
+  "name": "timeScheduler",
+  "version": "0.0.1",
+  "description": "timeScheduler is a schdule visualization and editing tool. It is based on https://sbstjn.github.io/timesheet.js",
+  "author": "roastedbill <roastedbill@gmail.com>",
   "devDependencies": {
     "consolidate": "^0.13.1",
     "express": "^4.12.4",

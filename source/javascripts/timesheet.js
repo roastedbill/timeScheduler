@@ -3,12 +3,13 @@
   /**
    * Initialize a Timesheet
    */
-  var Timesheet = function(container, beg, end, scheduledData, requestData) {
+  var Timesheet = function(container, beg, end, scheduledData, requestData, bubbleClickCallBack) {
     this.scheduledData = [];
     this.requestData = [];
     this.beg = beg;
     this.end = end;
     this.widthDay  = 0;
+    this.bubbleClickCallBack = bubbleClickCallBack;
     this.parse(scheduledData || [], requestData || []);
 
     if (typeof document !== 'undefined') {
@@ -27,13 +28,38 @@
     var newScheduleData = [];
     var lis = document.getElementsByClassName("schedule-li");
     for (var n = 0, m = lis.length; n < m; n++) {
-      if (lis[n].className.includes("separator")) {
+      if (lis[n].className.includes("non-data")) {
         break;
       }
       newScheduleData.push(lis[n].value);
     }
     return newScheduleData;
   };
+
+  Timesheet.prototype.scheduledDataHasIntersection = function() {
+    var scheduleDataTime = [];
+    var lis = document.getElementsByClassName("schedule-li");
+    for (var n = 0, m = lis.length; n < m; n++) {
+      if (lis[n].className.includes("non-data")) {
+        break;
+      }
+      var allData = this.scheduledData.concat(this.requestData);
+      for(var i in allData){
+        if(allData[i]["data"] == lis[n].value){
+          scheduleDataTime.push({"beg": allData[i]["beg"], "end": allData[i]["end"]});
+        }
+      }
+    }
+    scheduleDataTime.sort(function(a, b) {
+        a = a["beg"];
+        b = b["beg"];
+        return a < b ? -1 : (a > b ? 1 : 0);
+      });
+    for (var i = 0, j = scheduleDataTime.length-1; i < j; i++) {
+      if (scheduleDataTime[i]["end"] > scheduleDataTime[j]["beg"]) return true;
+    }
+    return false;
+  }
 
   /**
    * Init functions
@@ -63,6 +89,15 @@
     document.querySelector('#backButton').addEventListener('click', function() {
       timeSheet.togglePopup();
     });
+    var lis = document.getElementsByClassName("schedule-li");
+    for (var n = 0, m = lis.length; n < m; n++) {
+      if (lis[n].className.includes("separator")) {
+        continue;
+      }
+      lis[n].addEventListener('click', function() {
+        if (timeSheet.bubbleClickCallBack) timeSheet.bubbleClickCallBack(this.value);
+      });
+    }
   };
 
   /**
@@ -108,8 +143,8 @@
     }
 
     _insert_data(this, this.scheduledData, scheduledColors);
-    var separator = '<hr>';
-    html.push('<li class="separator schedule-li">' + separator + '</li>');
+    var separator = '<div class="separator"><span>Pending Requests</span></div>';
+    html.push('<li class="non-data schedule-li">' + separator + '</li>');
     _insert_data(this, this.requestData, requestColors);
     this.container.innerHTML += '<ul class="data">' + html.join('') + '</ul>';
   };
@@ -156,7 +191,9 @@
       img = scheduledData[n][3];
       label = scheduledData[n][4];
       data = scheduledData[n][5];
-      this.scheduledData.push({beg: beg, end: end, appId: appId, img: img, label: label, data: data});
+      if (beg < this.end && end > this.beg) {
+        this.scheduledData.push({beg: beg, end: end, appId: appId, img: img, label: label, data: data});
+      }
     }
     for (n = 0, m = requestData.length; n<m; n++) {
       beg = requestData[n][0];
@@ -165,7 +202,9 @@
       img = requestData[n][3];
       label = requestData[n][4];
       data = requestData[n][5];
-      this.requestData.push({beg: beg, end: end, appId: appId, img: img, label: label, data: data});
+      if (beg < this.end && end > this.beg) {
+        this.requestData.push({beg: beg, end: end, appId: appId, img: img, label: label, data: data});
+      }
     }
   };
 

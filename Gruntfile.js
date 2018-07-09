@@ -33,16 +33,6 @@ module.exports = function(grunt) {
 				}
 			}
 		},
-		jshint: {
-			all: {
-				src: [
-					'source/javascripts/*.js'
-				],
-				options: {
-					jshintrc: '.jshintrc'
-				}
-			}
-		},
 		simplemocha: {
 			options: {
 				globals: ['should'],
