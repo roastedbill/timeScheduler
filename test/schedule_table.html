@@ -25,6 +25,7 @@
         $( ".data" ).sortable({
           revert: true,
           cancel: '.separator',
+          helper: 'clone',
         });
         $( "ul, li" ).disableSelection();
         $("#button").on("click", function() {

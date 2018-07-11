@@ -91,7 +91,7 @@
     });
     var lis = document.getElementsByClassName("schedule-li");
     for (var n = 0, m = lis.length; n < m; n++) {
-      if (lis[n].className.includes("separator")) {
+      if (lis[n].className.includes("non-data")) {
         continue;
       }
       lis[n].addEventListener('click', function() {
