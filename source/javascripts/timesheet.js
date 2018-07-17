@@ -56,7 +56,7 @@
         return a < b ? -1 : (a > b ? 1 : 0);
       });
     for (var i = 0, j = scheduleDataTime.length-1; i < j; i++) {
-      if (scheduleDataTime[i]["end"] > scheduleDataTime[j]["beg"]) return true;
+      if (scheduleDataTime[i]["end"] > scheduleDataTime[i+1]["beg"]) return true;
     }
     return false;
   }
@@ -143,7 +143,7 @@
     }
 
     _insert_data(this, this.scheduledData, scheduledColors);
-    var separator = '<div class="separator"><span>Pending Requests</span></div>';
+    var separator = '<div class="separator"><span style="margin-top:10px;">Pending Requests</span></div>';
     html.push('<li class="non-data schedule-li">' + separator + '</li>');
     _insert_data(this, this.requestData, requestColors);
     this.container.innerHTML += '<ul class="data">' + html.join('') + '</ul>';
